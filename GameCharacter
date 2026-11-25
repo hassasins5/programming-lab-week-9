@@ -1,0 +1,66 @@
+package teammanagement;
+
+public abstract class GameCharacter {
+    private String name;
+    private int level;
+    private int health;
+    private int maxHealth;
+
+    public GameCharacter(String name, int level, int health, int maxHealth) {
+        this.name = name;
+
+        if (level < 1 || level > 100) {
+            this.level = 1;
+            System.out.println("Please enter a valid level between 1 and 100. Defaulting to 1.");
+        } else {
+            this.level = level;
+        }
+
+        if (maxHealth < 1 || maxHealth > 100) {
+            this.maxHealth = 100;
+            System.out.println("Please enter a valid maxHealth between 1 and 100. Defaulting to 100.");
+        } else {
+            this.maxHealth = maxHealth;
+        }
+
+        // Clamp starting health between 0 and maxHealth
+        this.health = Math.max(0, Math.min(health, this.maxHealth));
+    }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getLevel() { return level; }
+    public void setLevel(int level) { this.level = level; }
+
+    public int getHealth() { return health; }
+    public void setHealth(int health) { this.health = health; }
+
+    public int getMaxHealth() { return maxHealth; }
+    public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }
+
+    public abstract void getCharacterInfo();
+    public abstract int calculatePower();
+
+    public boolean isAlive() {
+        return this.health > 0;
+    }
+
+    public int takeDamage(int damage) {
+        if (this.health > damage) {
+            this.health -= damage;
+        } else {
+            this.health = 0;
+        }
+        return this.health;
+    }
+
+    public int restoreHealth(int amount) {
+        if (isAlive()) {
+            this.health = Math.min(this.maxHealth, this.health + amount);
+        } else {
+            System.out.println(this.name + " has died and cannot be healed.");
+        }
+        return this.health;
+    }
+}
