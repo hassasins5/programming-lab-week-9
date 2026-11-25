@@ -1,0 +1,49 @@
+package teammanagement;
+
+import java.util.ArrayList;
+
+public class Team {
+    private ArrayList<GameCharacter> list = new ArrayList<>();
+
+    public void addCharacter(GameCharacter character) {
+        for (GameCharacter c : list) {
+            if (c.getName().equalsIgnoreCase(character.getName())) {
+                System.out.println("A character with that name already exists. Please change the name.");
+                return;
+            }
+        }
+        list.add(character);
+    }
+
+    public void removeCharacter(String name) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getName().equalsIgnoreCase(name)) {
+                list.remove(i);
+                System.out.println(name + " removed from the team.");
+                return;
+            }
+        }
+        System.out.println("Character not found: " + name);
+    }
+
+    public void attackAll(GameCharacter target) {
+        for (GameCharacter c : list) {
+            if (c.isAlive() && c instanceof Attacker) {
+                ((Attacker) c).attack(target);
+            }
+        }
+    }
+
+    public void healTeam() {
+        for (GameCharacter c : list) {
+            if (c.isAlive() && c instanceof Supporter) {
+                Supporter supporter = (Supporter) c;
+                for (GameCharacter teammate : list) {
+                    if (teammate.isAlive()) {
+                        supporter.heal(teammate);
+                    }
+                }
+            }
+        }
+    }
+}
