@@ -1,0 +1,31 @@
+package teammanagement;
+
+public class Healer extends GameCharacter implements Supporter {
+    private int healAmount;
+
+    public Healer(String name, int level, int health, int maxHealth, int healAmount) {
+        super(name, level, health, maxHealth);
+        this.healAmount = healAmount;
+    }
+
+    public int getHealAmount() { return healAmount; }
+    public void setHealAmount(int healAmount) { this.healAmount = healAmount; }
+
+    @Override
+    public void getCharacterInfo() {
+        System.out.println("Healer: " + getName() + " | Level: " + getLevel()
+                + " | Health: " + getHealth() + "/" + getMaxHealth() + " | Heal Amount: " + healAmount);
+    }
+
+    @Override
+    public int calculatePower() {
+        return getLevel() * 5 + this.healAmount;
+    }
+
+    @Override
+    public int heal(GameCharacter target) {
+        int amount = this.healAmount + getLevel();
+        target.restoreHealth(amount);
+        return amount;
+    }
+}
